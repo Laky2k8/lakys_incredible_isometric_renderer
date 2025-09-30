@@ -27,9 +27,10 @@ The engine itself is also deliberately made to be renderer-independent, so with 
 <br>
 
 # How to build
-Just set up a C++ development environment with Raylib (or if you port it your preferred renderer). Then just build the project with any compiler you like. There is only one requirement: The used renderer must be passed as a flag, for example <code>-DUSE_RAYLIB</code> for Raylib.
+Just set up a C++ development environment with Raylib (or if you port it your preferred renderer). Then just build the project with any compiler you like. There is only one requirement: The used renderer must be passed as a flag, for example <code>-DUSE_RAYLIB</code> for Raylib. <br>
 **WARNING: I only tested the code on Windows. I can not guarantee that it will build on Linux or Mac OS, but it probably should :)**
 
 # How to run
-To run the engine, just download the newest release, unzip and launch `IsometricEngine.exe`.
+To run the engine, just download the newest release, unzip and launch `IsometricEngine.exe`. <br>
+To change the model, place a new model+texture in the assets folder and change the code to use that; Sorry, no way of changing it in the release version - yet :)
 
