@@ -202,6 +202,15 @@ namespace iso
 
 		}
 
+		string getName()
+		{
+			// return model name
+			size_t lastSlash = objPath.find_last_of("/\\");
+			size_t lastDot = objPath.find_last_of(".");
+			if (lastDot == string::npos || lastDot < lastSlash) lastDot = objPath.length();
+			return objPath.substr(lastSlash + 1, lastDot - lastSlash - 1);
+		}
+
 		void render(Camera cam, Texture modelTex, void(*draw_textured_triangle)(Vertex, Vertex, Vertex, Texture, TexCoord, TexCoord, TexCoord, float), float centerX, float centerY)
 		{
 				vector<Face> sorted_faces;

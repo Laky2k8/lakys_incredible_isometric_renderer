@@ -19,9 +19,9 @@ int main()
 
 	iso::Camera cam(vec3(0, 0, 0), vec3(30, 45, 0), 2);
 
-	iso::Model cubeModel("assets/models/teapot/teapot.obj");
+	iso::Model objModel("assets/models/teapot/teapot.obj");
 	Texture grass = LoadTexture("assets/models/teapot/default.png");
-	//iso::Model cubeModel("assets/models/grass/Grass_Block.obj");
+	//iso::Model objModel("assets/models/grass/Grass_Block.obj");
 	//Texture grass = LoadTexture("assets/models/grass/Grass_Block_TEX.png");
 
 	if (grass.id == 0) {
@@ -33,7 +33,7 @@ int main()
 		SetWindowTitle((string(TITLE) + " " + string(VERSION_NUM) + " - " + to_string(GetFPS()) + " FPS").c_str());
 		
 		// Update
-		float cameraSpeed = 100.0f * GetFrameTime(); // Adjust accordingly
+		float cameraSpeed = 100.0f * GetFrameTime();
 
 		// Forward and backward
 		if(IsKeyDown(KEY_W))
@@ -72,19 +72,19 @@ int main()
 		}
 
 		// Rotation
-		if(IsKeyDown(KEY_UP))
+		if(IsKeyDown(KEY_LEFT))
 		{
 			cam.rotation.setY(cam.rotation.getY() - cameraSpeed);
 		}
-		if(IsKeyDown(KEY_DOWN))
+		if(IsKeyDown(KEY_RIGHT))
 		{
 			cam.rotation.setY(cam.rotation.getY() + cameraSpeed);
 		}
-		if(IsKeyDown(KEY_LEFT))
+		if(IsKeyDown(KEY_UP))
 		{
 			cam.rotation.setX(cam.rotation.getX() - cameraSpeed);
 		}
-		if(IsKeyDown(KEY_RIGHT))
+		if(IsKeyDown(KEY_DOWN))
 		{
 			cam.rotation.setX(cam.rotation.getX() + cameraSpeed);
 		}
@@ -98,7 +98,7 @@ int main()
 
 		BeginDrawing();
 		ClearBackground(RAYWHITE);
-		DrawText("It works!", 20, 20, 20, BLACK);
+		DrawText(("Loaded model: " + objModel.getName()).c_str(), 10, 10, 20, DARKGRAY);
 
 		/*textured_triangle(
 			Vertex(100, 100, 0), Vertex(200, 100, 0), Vertex(150, 200, 0),
@@ -106,15 +106,8 @@ int main()
 			iso::TexCoord(0.0f, 0.0f), iso::TexCoord(1.0f, 0.0f), iso::TexCoord(0.5f, 1.0f),
 			1.0f
 		);*/
-
-		DrawTriangle(
-			(Vector2){ 350, 200 },  // Bottom vertex first
-			(Vector2){ 400, 100 },  // Top-right
-			(Vector2){ 300, 100 },   // Top-left
-			RED
-		);
 		
-		cubeModel.render(cam, grass, &textured_triangle, screenWidth / 2.0f, screenHeight / 2.0f);
+		objModel.render(cam, grass, &textured_triangle, screenWidth / 2.0f, screenHeight / 2.0f);
 
 		EndDrawing();
 	}
