@@ -183,7 +183,7 @@ int main()
 		// File loading GUI
 		if (fileDialogState.windowActive) GuiLock();
 
-		if (GuiButton((Rectangle){ 20, 20, 140, 30 }, GuiIconText(ICON_FILE_OPEN, "Open Image"))) fileDialogState.windowActive = true;
+		if (GuiButton((Rectangle){ 20, 20, 140, 30 }, GuiIconText(ICON_FILE_OPEN, "Open Model"))) fileDialogState.windowActive = true;
 
 		GuiUnlock();
 
