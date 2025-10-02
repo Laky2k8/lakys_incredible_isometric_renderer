@@ -636,26 +636,22 @@ namespace objl
 					outputIndicator = 0;
 					#endif
 				}
+				
 				// Load Materials
 				if (algorithm::firstToken(curline) == "mtllib")
 				{
-					// Generate LoadedMaterial
-
 					// Generate a path to the material file
-					std::vector<std::string> temp;
-					algorithm::split(Path, temp, "/");
-
 					std::string pathtomat = "";
-
-					if (temp.size() != 1)
+					
+					// Find the last occurrence of either slash type
+					size_t lastSlash = Path.find_last_of("/\\");
+					
+					if (lastSlash != std::string::npos)
 					{
-						for (int i = 0; i < temp.size() - 1; i++)
-						{
-							pathtomat += temp[i] + "/";
-						}
+						// Extract the directory part (everything before the last slash)
+						pathtomat = Path.substr(0, lastSlash + 1);
 					}
-
-
+					
 					pathtomat += algorithm::tail(curline);
 
 					#ifdef OBJL_CONSOLE_OUTPUT
@@ -686,12 +682,9 @@ namespace objl
 			file.close();
 
 			// Set Materials for each Mesh
-			for (int i = 0; i < MeshMatNames.size(); i++)
+			for (int i = 0; i < std::min(MeshMatNames.size(), LoadedMeshes.size()); i++)
 			{
 				std::string matname = MeshMatNames[i];
-
-				// Find corresponding material name in loaded materials
-				// when found copy material variables into mesh material
 				for (int j = 0; j < LoadedMaterials.size(); j++)
 				{
 					if (LoadedMaterials[j].name == matname)
@@ -700,6 +693,20 @@ namespace objl
 						break;
 					}
 				}
+			}
+
+			std::cout << "Loaded " << LoadedMaterials.size() << " materials" << std::endl;
+			for(const auto& mat : LoadedMaterials) {
+				std::cout << "  Material: " << mat.name << std::endl;
+				std::cout << "    map_Kd: " << mat.map_Kd << std::endl;
+			}
+
+			// After material assignment:
+			std::cout << "Meshes: " << LoadedMeshes.size() << ", MeshMatNames: " << MeshMatNames.size() << std::endl;
+
+
+			if(LoadedMaterials.empty()) {
+				std::cout << "No materials loaded!!!!!!!!!" << std::endl;
 			}
 
 			if (LoadedMeshes.empty() && LoadedVertices.empty() && LoadedIndices.empty())

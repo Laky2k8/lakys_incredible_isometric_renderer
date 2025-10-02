@@ -65,6 +65,7 @@ namespace iso
 		vector<Vertex> vertices;
 		vector<Face> faces;
 		string objPath;
+		string texturePath;
 
 		float calculateShading(float depth)
 		{
@@ -77,7 +78,7 @@ namespace iso
 
 	public:
 
-		Model(string objPath) : objPath(objPath)
+		/*Model(string objPath) : objPath(objPath)
 		{
 
 			objl::Loader objLoader;
@@ -96,7 +97,7 @@ namespace iso
 			cout << "	- Object name: " << mesh.MeshName << endl;
 			cout << endl;
 
-			/*cout << "	- Vertices count: " << mesh.Vertices.size() << endl;
+			cout << "	- Vertices count: " << mesh.Vertices.size() << endl;
 			cout << "	- Vertices: " << endl;
 			for (int i = 0; i < mesh.Vertices.size(); ++i)
 			{
@@ -109,7 +110,7 @@ namespace iso
 			{
 				cout << "		" << i << ". X:" << mesh.Vertices[i].TextureCoordinate.X << ", Y: " << mesh.Vertices[i].TextureCoordinate.Y  << endl;
 			}
-			cout << endl;*/
+			cout << endl;
 
 
 			// Assign vertices
@@ -130,14 +131,14 @@ namespace iso
 			}
 
 			// Normalize and scale to [-50, 50]
-			/*for (auto& v : mesh.Vertices)
+			for (auto& v : mesh.Vertices)
 			{
 				float newX = ((v.Position.X - minX) / (maxX - minX)) * 100.0f - 50.0f;
 				float newY = ((v.Position.Y - minY) / (maxY - minY)) * 100.0f - 50.0f;
 				float newZ = ((v.Position.Z - minZ) / (maxZ - minZ)) * 100.0f - 50.0f;
 
 				vertices.emplace_back(Vertex(newX, newY, newZ));
-			}*/
+			}
 
 			for (int i = 0; i < mesh.Vertices.size(); ++i)
 			{
@@ -151,13 +152,13 @@ namespace iso
 			// Save texture coordinates
 			vector<TexCoord> texCoords;
 
-			/*for (int i = 0; i < mesh.Vertices.size(); i++)
+			for (int i = 0; i < mesh.Vertices.size(); i++)
 			{
 				texCoords.emplace_back(TexCoord(
 					mesh.Vertices[i].TextureCoordinate.X,
 					mesh.Vertices[i].TextureCoordinate.Y
 				));
-			}*/
+			}
 
 			// Assign faces (triangles)
 			for (int i = 0; i < mesh.Indices.size(); i += 3)
@@ -178,7 +179,7 @@ namespace iso
 			}
 
 
-			/*vertices = {
+			vertices = {
 				Vertex(-50.0f,-50.0f,-50.0f),
 				Vertex( 50.0f,-50.0f,-50.0f),
 				Vertex( 50.0f, 50.0f,-50.0f),
@@ -187,19 +188,142 @@ namespace iso
 				Vertex( 50.0f,-50.0f, 50.0f),
 				Vertex( 50.0f, 50.0f, 50.0f),
 				Vertex(-50.0f, 50.0f, 50.0f)
-			};*/
+			};
 
-			/*faces = {
+			faces = {
 				Face({0,1,2}, {TexCoord(0.0f, 0.0f), TexCoord(1.0f, 0.0f), TexCoord(1.0f, 1.0f)}, 0), Face({0,2,3}, {TexCoord(0.0f, 0.0f), TexCoord(1.0f, 1.0f), TexCoord(0.0f, 1.0f)}, 0),
 				Face({4,6,5}, {TexCoord(0.0f, 0.0f), TexCoord(1.0f, 1.0f), TexCoord(1.0f, 0.0f)}, 0), Face({4,7,6}, {TexCoord(0.0f, 0.0f), TexCoord(0.0f, 1.0f), TexCoord(1.0f, 1.0f)}, 0),
 				Face({3,2,6}, {TexCoord(0.0f, 1.0f), TexCoord(1.0f, 1.0f), TexCoord(1.0f, 0.0f)}, 0), Face({3,6,7}, {TexCoord(0.0f, 1.0f), TexCoord(1.0f, 0.0f), TexCoord(0.0f, 0.0f)}, 0),
 				Face({0,5,1}, {TexCoord(0.0f, 1.0f), TexCoord(1.0f, 0.0f), TexCoord(1.0f, 1.0f)}, 0), Face({0,4,5}, {TexCoord(0.0f, 1.0f), TexCoord(0.0f, 0.0f), TexCoord(1.0f, 0.0f)}, 0),
 				Face({1,5,6}, {TexCoord(0.0f, 0.0f), TexCoord(1.0f, 0.0f), TexCoord(1.0f, 1.0f)}, 0), Face({1,6,2}, {TexCoord(0.0f, 0.0f), TexCoord(1.0f, 1.0f), TexCoord(0.0f, 1.0f)}, 0),
 				Face({0,3,7}, {TexCoord(0.0f, 0.0f), TexCoord(0.0f, 1.0f), TexCoord(1.0f, 1.0f)}, 0), Face({0,7,4}, {TexCoord(0.0f, 0.0f), TexCoord(1.0f, 1.0f), TexCoord(1.0f, 0.0f)}, 0)
-			};*/
+			};
+
+		}*/
+
+		Model(string objPath) : objPath(objPath)
+		{
+			loadModel(objPath);
+		}
 
 
+		void loadModel(string objPath)
+		{
+			// Clear previous data
+			vertices.clear();
+			faces.clear();
 
+			this->objPath = objPath;
+
+			// Load new model
+			objl::Loader objLoader;
+
+			bool loadout = objLoader.LoadFile(objPath);
+
+			if(!loadout)
+			{
+				cerr << "Failed to load OBJ file from " << objPath << endl;
+				return;
+			}
+
+			objl::Mesh mesh = objLoader.LoadedMeshes[0];
+
+			cout << "Loaded OBJ file from" << objPath << endl;
+			cout << "	- Object name: " << mesh.MeshName << endl;
+			cout << endl;
+
+			// Assign vertices
+			
+			float minX = FLT_MAX, maxX = -FLT_MAX;
+			float minY = FLT_MAX, maxY = -FLT_MAX;
+			float minZ = FLT_MAX, maxZ = -FLT_MAX;
+
+			// Find min and max
+			for (auto& v : mesh.Vertices)
+			{
+				minX = std::min(minX, v.Position.X);
+				maxX = std::max(maxX, v.Position.X);
+				minY = std::min(minY, v.Position.Y);
+				maxY = std::max(maxY, v.Position.Y);
+				minZ = std::min(minZ, v.Position.Z);
+				maxZ = std::max(maxZ, v.Position.Z);
+			}
+
+			// Calculate dimensions
+			float width = maxX - minX;
+			float height = maxY - minY;
+			float depth = maxZ - minZ;
+
+			// Find the largest dimension
+			float maxDimension = std::max({width, height, depth});
+
+			// Define target size (adjust this value to your needs)
+			float targetSize = 200.0f;
+
+			// Calculate scale factor
+			float scale = targetSize / maxDimension;
+
+			// Calculate center of the bounding box
+			float centerX = (minX + maxX) / 2.0f;
+			float centerY = (minY + maxY) / 2.0f - 30.0f;
+			float centerZ = (minZ + maxZ) / 2.0f;
+
+			// Scale and center the model
+			for (int i = 0; i < mesh.Vertices.size(); ++i)
+			{
+				vertices.emplace_back(Vertex(
+					(mesh.Vertices[i].Position.X - centerX) * scale,
+					(mesh.Vertices[i].Position.Y - centerY) * scale,
+					(mesh.Vertices[i].Position.Z - centerZ) * scale
+				));
+			}
+
+			// Save texture coordinates
+			vector<TexCoord> texCoords;
+
+			// Assign faces (triangles)
+			for (int i = 0; i < mesh.Indices.size(); i += 3)
+			{
+				int idx1 = mesh.Indices[i];
+				int idx2 = mesh.Indices[i + 1];
+				int idx3 = mesh.Indices[i + 2];
+
+				faces.emplace_back(Face(
+					{ idx1, idx2, idx3 },
+					{ 
+						TexCoord(mesh.Vertices[idx1].TextureCoordinate.X, mesh.Vertices[idx1].TextureCoordinate.Y),
+						TexCoord(mesh.Vertices[idx2].TextureCoordinate.X, mesh.Vertices[idx2].TextureCoordinate.Y),
+						TexCoord(mesh.Vertices[idx3].TextureCoordinate.X, mesh.Vertices[idx3].TextureCoordinate.Y)
+					},
+					0.0f
+				));
+			}
+
+			cout << "Material: " << mesh.MeshMaterial.name << "\n";
+			cout << "Ambient Color: " << mesh.MeshMaterial.Ka.X << ", " << mesh.MeshMaterial.Ka.Y << ", " << mesh.MeshMaterial.Ka.Z << "\n";
+			cout << "Diffuse Color: " << mesh.MeshMaterial.Kd.X << ", " << mesh.MeshMaterial.Kd.Y << ", " << mesh.MeshMaterial.Kd.Z << "\n";
+			cout << "Specular Color: " << mesh.MeshMaterial.Ks.X << ", " << mesh.MeshMaterial.Ks.Y << ", " << mesh.MeshMaterial.Ks.Z << "\n";
+			cout << "Specular Exponent: " << mesh.MeshMaterial.Ns << "\n";
+			cout << "Optical Density: " << mesh.MeshMaterial.Ni << "\n";
+			cout << "Dissolve: " << mesh.MeshMaterial.d << "\n";
+			cout << "Illumination: " << mesh.MeshMaterial.illum << "\n";
+			cout << "Ambient Texture Map: " << mesh.MeshMaterial.map_Ka << "\n";
+			cout << "Diffuse Texture Map: " << mesh.MeshMaterial.map_Kd << "\n";
+			cout << "Specular Texture Map: " << mesh.MeshMaterial.map_Ks << "\n";
+			cout << "Alpha Texture Map: " << mesh.MeshMaterial.map_d << "\n";
+			cout << "Bump Map: " << mesh.MeshMaterial.map_bump << "\n";
+			if(!mesh.MeshMaterial.map_Kd.empty())
+			{
+				// Texture path is the same as the OBJ file but with the texture filename
+				size_t lastSlash = objPath.find_last_of("/\\");
+				texturePath = objPath.substr(0, lastSlash + 1) + mesh.MeshMaterial.map_Kd;
+				cout << "	- Texture path: " << texturePath << endl;
+			}
+			else
+			{
+				texturePath = "/assets/textures/grass.png"; // Default texture
+			}
+			
 		}
 
 		string getName()
@@ -209,6 +333,11 @@ namespace iso
 			size_t lastDot = objPath.find_last_of(".");
 			if (lastDot == string::npos || lastDot < lastSlash) lastDot = objPath.length();
 			return objPath.substr(lastSlash + 1, lastDot - lastSlash - 1);
+		}
+
+		string getTexturePath()
+		{
+			return texturePath;
 		}
 
 		void render(Camera cam, Texture modelTex, void(*draw_textured_triangle)(Vertex, Vertex, Vertex, Texture, TexCoord, TexCoord, TexCoord, float), float centerX, float centerY)
@@ -270,6 +399,43 @@ namespace iso
 				// And finally, draw the triangle ^^
 				draw_textured_triangle(vert1_projected, vert2_projected, vert3_projected, modelTex, uvs[0], uvs[1], uvs[2], shade);
 
+			}
+		}
+
+		void draw_grid(Camera cam, float centerX, float centerY, rgb color, void(*draw_line)(int, int, int, int, rgb), int gridSize = 500)
+		{
+			int spacing = 10; // Spacing between grid lines
+
+			// Draw lines parallel to X-axis (going left-right in world space)
+			for (int z = -gridSize; z <= gridSize; z += spacing) 
+			{
+				vec3 startWorld(-gridSize, 0, z);
+				vec3 endWorld(gridSize, 0, z);
+
+				// Create vertices directly from world coordinates
+				Vertex startVertex(startWorld.getX(), startWorld.getY(), startWorld.getZ() -50.0f);
+				Vertex endVertex(endWorld.getX(), endWorld.getY(), endWorld.getZ() -50.0f);
+
+				Vertex startScreen = startVertex.getProjection(cam.position, cam.rotation, centerX, centerY, cam.zoom);
+				Vertex endScreen = endVertex.getProjection(cam.position, cam.rotation, centerX, centerY, cam.zoom);
+
+				draw_line((int)startScreen.getX(), (int)startScreen.getY(), (int)endScreen.getX(), (int)endScreen.getY(), color);
+			}
+
+			// Draw lines parallel to Z-axis (going forward-backward in world space)
+			for (int x = -gridSize; x <= gridSize; x += spacing) 
+			{
+				vec3 startWorld(x, 0, -gridSize);
+				vec3 endWorld(x, 0, gridSize);
+
+				// Create vertices directly from world coordinates
+				Vertex startVertex(startWorld.getX(), startWorld.getY(), startWorld.getZ());
+				Vertex endVertex(endWorld.getX(), endWorld.getY(), endWorld.getZ());
+
+				Vertex startScreen = startVertex.getProjection(cam.position, cam.rotation, centerX, centerY, cam.zoom);
+				Vertex endScreen = endVertex.getProjection(cam.position, cam.rotation, centerX, centerY, cam.zoom);
+
+				draw_line((int)startScreen.getX(), (int)startScreen.getY(), (int)endScreen.getX(), (int)endScreen.getY(), color);
 			}
 		}
 
