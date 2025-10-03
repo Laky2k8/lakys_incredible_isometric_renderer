@@ -1,4 +1,4 @@
-# Laky's Phenomenal Pathtracer
+# Laky's Incredible Isometric Renderer
 <br>
 
 Old RPG games like Fallout 1 and 2 and other isometric games always fascinated me: The way they convey three dimensions with no perspective and relatively simple maths always mesmerised me. But my main problem was always that despite the simple math all of these engines always remained
