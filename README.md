@@ -33,4 +33,5 @@ Just set up a C++ development environment with Raylib (or if you port it your pr
 # How to run
 To run the engine, just download the newest release, unzip and launch `IsometricEngine.exe`. <br>
 To change the model, click on the `Open Model` button and select the model. OBJ models only and for textures an MTL file is needed aswell.
+### The engine requires OpenGL support and will not run without it!
 
