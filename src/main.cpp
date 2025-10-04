@@ -1,3 +1,4 @@
+#include "messagebox.h"
 #include "raylib.h"
 #include "rlgl.h"
 #include <iostream>
@@ -8,7 +9,7 @@
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
-#undef RAYGUI_IMPLEMENTATION            // Avoid including raygui implementation again
+#undef RAYGUI_IMPLEMENTATION
 
 #define GUI_WINDOW_FILE_DIALOG_IMPLEMENTATION
 #include "gui_window_file_dialog.h"
@@ -18,18 +19,29 @@ string textureFile = "assets/models/teapot/default.png";
 
 
 #define TITLE "Laky's Incredible Isometric Renderer"
-#define VERSION_NUM "0.2.5"
+#define VERSION_NUM "0.2.5.1"
 
 void textured_triangle(Vertex vert1, Vertex vert2, Vertex vert3, Texture texture, iso::TexCoord uv1, iso::TexCoord uv2, iso::TexCoord uv3, float shade);
 void draw_line(int x1, int y1, int x2, int y2, rgb color);
-
-
 
 int main() 
 {
 	const int screenWidth = 800;
 	const int screenHeight = 600;
 	InitWindow(screenWidth, screenHeight, (string(TITLE) + " " + string(VERSION_NUM)).c_str());
+
+	if (!IsWindowReady()) {
+		std::cerr << "FATAL: Failed to create window!" << std::endl;
+		std::cerr << "Possible causes:" << std::endl;
+		std::cerr << "  - OpenGL not supported on your system" << std::endl;
+		std::cerr << "  - Outdated graphics drivers" << std::endl;
+
+		ShowErrorMessageBox(TITLE, "The renderer has failed to create the window.\nIt might be that OpenGL is not supported on your system, or that you have outdated graphics drivers.");
+
+		return -1;
+	}
+
+
 	SetTargetFPS(144);
 
 	// Model and texture loading
@@ -70,7 +82,11 @@ int main()
             }
 			else
 			{
-				int result = GuiMessageBox((Rectangle){ 0, 0, 250, 100 }, "#191#Message Box", "The engine only support .OBJ models!", "OK");
+				/*int result = GuiMessageBox((Rectangle){ 0, 0, 250, 100 }, "#191#Message Box", "The engine only support .OBJ models!", "OK");
+
+				if (result >= 0) showMessageBox = false;*/
+
+				ShowErrorMessageBox(TITLE, "The engine only supports .OBJ models!");
 			}
 
             fileDialogState.SelectFilePressed = false;
