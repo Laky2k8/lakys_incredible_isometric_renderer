@@ -1,4 +1,4 @@
-# Laky's Phenomenal Pathtracer
+# Laky's Incredible Isometric Renderer
 <br>
 
 Old RPG games like Fallout 1 and 2 and other isometric games always fascinated me: The way they convey three dimensions with no perspective and relatively simple maths always mesmerised me. But my main problem was always that despite the simple math all of these engines always remained
@@ -32,5 +32,5 @@ Just set up a C++ development environment with Raylib (or if you port it your pr
 
 # How to run
 To run the engine, just download the newest release, unzip and launch `IsometricEngine.exe`. <br>
-To change the model, place a new model+texture in the assets folder and change the code to use that; Sorry, no way of changing it in the release version - yet :)
+To change the model, click on the `Open Model` button and select the model. OBJ models only and for textures an MTL file is needed aswell.
 
